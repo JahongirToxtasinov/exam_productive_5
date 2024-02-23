@@ -35,6 +35,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Right(AuthenticatedUserModel
           .fromFirebaseUser(user));
     } on ServerException catch (error) {
+      print(error);
       return Left(ServerFailure(message: error.message, code: error.code));
     }
   }

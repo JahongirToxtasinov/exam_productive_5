@@ -1,6 +1,8 @@
 import 'package:exam_productive_5/assets/constants/colors.dart';
 import 'package:exam_productive_5/assets/constants/icons.dart';
 import 'package:exam_productive_5/core/widgets.dart';
+import 'package:exam_productive_5/features/authentication/presentation/widgets/divider.dart';
+import 'package:exam_productive_5/features/authentication/presentation/widgets/sign_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   bool hide = false;
   bool disabled = true;
+  bool registered = false;
   @override
   void initState() {
     emailController = TextEditingController();
@@ -48,16 +51,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextField(
                       style: const TextStyle(color: Colors.white),
                       controller: emailController,
-                      onEditingComplete: () {
-                        print("oneditWorked");
-                        if(emailController.text.isNotEmpty &&
-                            passwordController.text.isNotEmpty) {
-                          disabled = false;
-                          setState(() {
-                          });
-                        }
-                      },
-
+                        onChanged: (value){
+                          if(emailController.text.isNotEmpty &&
+                              passwordController.text.isNotEmpty) {
+                            disabled = false;
+                            setState(() {
+                            });
+                          }
+                        },
                       decoration: InputDecoration(
                           hintText: "Email",
                           hintStyle: Theme.of(context)
@@ -79,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: const TextStyle(color: Colors.white),
                       controller: passwordController,
                       obscureText: hide,
-                      onEditingComplete: () {
+                      onChanged: (value){
                         if(emailController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty) {
                           disabled = false;
@@ -138,36 +139,61 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     );
                                     Navigator.of(context).pushNamed("/home");
+                                    registered = true;
                                   },
                                   onFailure: (String value) async {
-                                    context.read<AuthenticatedBloc>().add(
-                                          CreateUserAuth(
-                                            emailText: emailController.text,
-                                            passwordText:
-                                                passwordController.text,
-                                            onSuccess: () {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                      'Successfully created'),
-                                                ),
-                                              );
-                                              Navigator.of(context)
-                                                  .pushNamed("/home");
-                                            },
-                                            onFailure: (value) {
-                                              print(value);
-                                            },
-                                          ),
-                                        );
+
                                   },
                                 ),
                               );
+                          if(registered != true) {
+                            context.read<AuthenticatedBloc>().add(
+                              CreateUserAuth(
+                                emailText: emailController.text,
+                                passwordText:
+                                passwordController.text,
+                                onSuccess: () {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Successfully created'),
+                                    ),
+                                  );
+                                  Navigator.of(context)
+                                      .pushNamed("/home");
+                                },
+                                onFailure: (value) {
+                                  print(value);
+                                },
+                              ),
+                            );
+                          }
+
                         }
                       },
                       title: "Login",
                  ),
+                  const Gap(56),
+                  const  Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                     MyDivider(width: 157),
+                      Text("OR",style: TextStyle(color: Colors.white,
+                          fontSize: 14,fontWeight: FontWeight.w500),),
+                      MyDivider(width: 157),
+                    ],
+                  ),
+                  const Gap(24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SignWidget(icon: AppIcons.facebook, onTap: (){}),
+                      SignWidget(icon: AppIcons.google, onTap: (){}),
+                      SignWidget(icon: AppIcons.apple, onTap: (){}),
+
+                    ],
+                  )
                 ],
               ),
             ),
