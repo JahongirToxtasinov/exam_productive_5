@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "402814852034",
+    "project_id": "exam-c44de",
+    "storage_bucket": "exam-c44de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402814852034:android:0937e4d981360dad64145b",
+        "android_client_info": {
+          "package_name": "com.example.exam_productive_5"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbP4fm-om9xLzqiGzR-_6vNOo0j-lVNv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
